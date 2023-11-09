@@ -2,9 +2,13 @@
 
 <p id="description">TCC Ciência da Computação Unisinos - App Replicador Repositórios</p>
 
+<h2>🛠️ Requirements:</h2>
+
+* Linux operating system
+* Java 17+
+* Git (add to system path)
   
-  
-<h2>🛠️ Installation Steps:</h2>
+<h2>≣ Execution steps:</h2>
 
 <p>1. Clone this project</p>
 
@@ -28,4 +32,6 @@ java -jar target/app-replicador-1.0-jar-with-dependencies.jar [svn|git] [source 
 
 Technologies used in the project:
 
-*   Java
+* Java
+* Maven
+* Git
