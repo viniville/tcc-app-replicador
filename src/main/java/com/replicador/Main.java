@@ -9,7 +9,7 @@ import static com.replicador.SamplesUtility.crateIfNotExists;
 
 public class Main {
 
-    private static enum TypeCVS {
+    private static enum TypeVCS {
         GIT, SVN
     }
 
@@ -19,7 +19,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         if (validaInputParams(args)) {
-            final var typeRepository = TypeCVS.valueOf(args[IDX_PARAM_TYPE_CVS].toUpperCase());
+            final var typeRepository = TypeVCS.valueOf(args[IDX_PARAM_TYPE_CVS].toUpperCase());
             final var sourceRepository = args[IDX_PARAM_SOURCE_GIT_PROJECTS];
             final var targetRepository = args[IDX_PARAM_REPLICA_DESTINATION_REPOSITORY];
 
@@ -70,15 +70,15 @@ public class Main {
         return dirReplica;
     }
 
-    private static void processDirectory(TypeCVS typeRepository, File dirProcess, File dirBaseReplicas) {
+    private static void processDirectory(TypeVCS typeRepository, File dirProcess, File dirBaseReplicas) {
         try {
-            if (TypeCVS.GIT.equals(typeRepository)) {
+            if (TypeVCS.GIT.equals(typeRepository)) {
                 ReplicadorGit.run(dirProcess, dirBaseReplicas);
-            } else if (TypeCVS.SVN.equals(typeRepository)) {
+            } else if (TypeVCS.SVN.equals(typeRepository)) {
                 ReplicadorSvn2.run(dirProcess, dirBaseReplicas);
             }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            System.out.printf("Não foi possível concluir o processamento do repo %s%n", dirProcess.getName());
         }
     }
 
