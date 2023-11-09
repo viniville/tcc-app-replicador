@@ -246,25 +246,24 @@ public class ReplicadorGit {
 
     private static void escreveLinhasAlteracao(RevCommit rev, RevCommit commit) {
         try {
-            try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
-                AbstractTreeIterator oldTreeParser = prepareTreeParser(repoCopy,
-                        rev.getId());
-                AbstractTreeIterator newTreeParser = prepareTreeParser(repoCopy,
-                        commit.getId());
+            AbstractTreeIterator oldTreeParser = prepareTreeParser(repoCopy,
+                    rev.getId());
+            AbstractTreeIterator newTreeParser = prepareTreeParser(repoCopy,
+                    commit.getId());
 
-                Map<String, String> fontes = buscaArquivosFontes(commit, repoCopy);
+            Map<String, String> fontes = buscaArquivosFontes(commit, repoCopy);
 
-                // then the procelain diff-command returns a list of diff entries
-                List<DiffEntry> diff = new Git(repoCopy).diff()
-                        .setOldTree(oldTreeParser).setNewTree(newTreeParser)
-                        .call();
-                for (DiffEntry entry : diff) {
-                    if (!entry.getChangeType().equals(ChangeType.MODIFY)
-                            && !entry.getChangeType().equals(ChangeType.COPY))
-                        continue;
+            // then the procelain diff-command returns a list of diff entries
+            List<DiffEntry> diff = new Git(repoCopy).diff()
+                    .setOldTree(oldTreeParser).setNewTree(newTreeParser)
+                    .call();
+            for (DiffEntry entry : diff) {
+                if (!entry.getChangeType().equals(ChangeType.MODIFY)
+                        && !entry.getChangeType().equals(ChangeType.COPY))
+                    continue;
 
-                    String[] qtdLinhas = fontes.get(entry.getNewPath()).split(System.lineSeparator());
-
+                String[] qtdLinhas = fontes.get(entry.getNewPath()).split(System.lineSeparator());
+                try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
                     DiffFormatter formatter = new DiffFormatter(output);
                     formatter.setRepository(repoCopy);
                     formatter.format(entry);
